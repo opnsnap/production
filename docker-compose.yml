@@ -1,0 +1,66 @@
+version: '3.9'
+
+services:
+  db:
+    image: mongo:5.0
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=Hello123World
+
+  minio:
+    image: bitnami/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - MINIO_ROOT_USER=minio-root-user
+      - MINIO_ROOT_PASSWORD=minio-root-password
+
+  # es01:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
+  #   container_name: es01
+  #   ports:
+  #     - 9200:9200
+  #   environment:
+  #     - node.name=es01
+  #     # - bootstrap.memory_lock=true
+  #     # - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - elastic_data:/usr/share/elasticsearch/data
+  #   networks:
+  #     - elastic
+
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:8.1.2
+  #   environment:
+  #     ELASTICSEARCH_URL: http://es01:9200
+  #     ELASTICSEARCH_HOSTS: '["http://es01:9200"]'
+  #   ports:
+  #     - 5601:5601
+  #   networks:
+  #     - elastic
+
+  t1_server:
+    build: ./t1
+    ports:
+      - 3000:8080
+    environment:
+      - MONGO_URL=mongodb://db:27017
+    depends_on:
+      - "db"
+
+volumes:
+  db: {}
+  elastic_data: {}
+
+networks:
+  elastic:
+    driver: bridge
