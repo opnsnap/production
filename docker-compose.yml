@@ -1,6 +1,15 @@
 version: '3.9'
 
 services:
+  nginx:
+    image: nginx:1.21
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./etc/nginx:/etc/nginx
+
   db:
     image: mongo:5.0
     ports:
