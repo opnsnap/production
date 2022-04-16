@@ -9,6 +9,7 @@ services:
       - 443:443
     depends_on:
       - upload_service
+      - download_service
     volumes:
       - ./etc/nginx:/etc/nginx
 
@@ -44,6 +45,17 @@ services:
 
   upload_service:
     image: ghcr.io/opnsnap/upload-service:main
+    restart: on-failure
+    expose:
+      - 8080
+    env_file:
+      - minio.env
+    depends_on:
+      minio:
+        condition: service_healthy
+
+  download_service:
+    image: ghcr.io/opnsnap/download-service:main
     restart: on-failure
     expose:
       - 8080
