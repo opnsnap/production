@@ -19,7 +19,6 @@ services:
     environment:
       - MINIO_ROOT_USER=minio-root-user
       - MINIO_ROOT_PASSWORD=minio-root-password
-
   # es01:
   #   image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
   #   container_name: es01
@@ -48,14 +47,14 @@ services:
   #   networks:
   #     - elastic
 
-  t1_server:
-    build: ./t1
-    ports:
-      - 3000:8080
-    environment:
-      - MONGO_URL=mongodb://db:27017
-    depends_on:
-      - "db"
+  # t1_server:
+  #   build: ./t1
+  #   ports:
+  #     - 3000:8080
+  #   environment:
+  #     - MONGO_URL=mongodb://db:27017
+  #   depends_on:
+  #     - "db"
 
 volumes:
   db: {}
