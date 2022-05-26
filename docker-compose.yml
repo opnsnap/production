@@ -10,18 +10,19 @@ services:
     depends_on:
       - upload_service
       - download_service
+      - minio
     volumes:
       - ./etc/nginx:/etc/nginx
 
-  # db:
-  #   image: mongo:5.0
-  #   restart: on-failure
-  #   ports:
-  #     - 27017:27017
-  #   volumes:
-  #     - db:/data/db
-  #   env_file:
-  #     - mongodb.env
+  db:
+    image: mongo:5.0
+    restart: on-failure
+    ports:
+      - 27017:27017
+    volumes:
+      - db:/data/db
+    env_file:
+      - mongodb.env
 
   minio:
     image: bitnami/minio:latest
